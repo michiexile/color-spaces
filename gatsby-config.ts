@@ -3,7 +3,8 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `color-spaces`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `https://michiexile.github.io`,
+    base: 'color-spaces'
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
@@ -26,4 +27,7 @@ const config: GatsbyConfig = {
   }]
 };
 
+module.exports = {
+  pathPrefix: `/color-spaces`
+}
 export default config;
