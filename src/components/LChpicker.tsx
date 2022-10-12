@@ -69,7 +69,7 @@ export default function LChpicker(props : LChpickerProps) {
         `}</style>
         <ul>
         <li id="lchL"><GradientSlider max={100} label="L*" unit="" className={"lchL"} value={value("l")} gradient={lGradient} initval={lchcolor.l} onChange={lOnChange}/></li>
-        <li id="lchC"><GradientSlider max={230} label="C*" unit="" className={"lchC"} value={c => value("c")(c)} gradient={cGradient} initval={100*lchcolor.c} onChange={cOnChange}/></li>
-        <li id="lchHab"><GradientSlider max={360} label="Hab*" unit="º" className={"lchHab"} value={c => value("h")(c)} gradient={hGradient} initval={100*lchcolor.h} onChange={hOnChange}/></li>
+        <li id="lchC"><GradientSlider max={230} label="C*" unit="" className={"lchC"} value={value("c")} gradient={cGradient} initval={lchcolor.c} onChange={cOnChange}/></li>
+        <li id="lchHab"><GradientSlider max={360} label="Hab*" unit="º" className={"lchHab"} value={value("h")} gradient={hGradient} initval={lchcolor.h} onChange={hOnChange}/></li>
     </ul></div>);
 }

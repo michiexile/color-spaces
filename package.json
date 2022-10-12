@@ -1,6 +1,6 @@
 {
   "name": "color-spaces",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "color-spaces",
   "author": "Mikael Vejdemo-Johansson",
@@ -18,12 +18,16 @@
   "dependencies": {
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
-    "@fontsource/roboto": "latest",
     "@fontsource/merriweather": "latest",
+    "@fontsource/roboto": "latest",
     "@mdx-js/react": "^2.1.4",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "latest",
     "d3": "latest",
+    "d3-cam02": "latest",
+    "d3-hcg": "^0.0.10",
+    "d3-hsluv": "^0.1.2",
+    "d3-hsv": "^0.1.0",
     "gatsby": "^4.24.3",
     "gatsby-plugin-image": "^2.24.0",
     "gatsby-plugin-mdx": "^4.3.0",
@@ -36,6 +40,7 @@
   "devDependencies": {
     "@types/d3": "latest",
     "@types/d3-color": "latest",
+    "@types/d3-hsv": "^0.1.4",
     "@types/node": "^17.0.45",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",

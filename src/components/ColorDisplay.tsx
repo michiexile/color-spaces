@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {ColorContext} from "./Color";
-import {AppBar, Box, Typography} from "@mui/material";
+import {AppBar, Toolbar} from "@mui/material";
 import {hsl} from "d3-color";
 
 type ColorDisplayProps = {
@@ -13,7 +13,9 @@ export default function ColorDisplay(props : ColorDisplayProps): JSX.Element {
         <AppBar position={"sticky"}
                 sx={{backgroundColor: color.formatHex(),
                     color: hslcolor.l > 0.4 ? "black" : "white"}}>
-            <Typography variant={"h1"}>{props.children}</Typography>
+            <Toolbar>
+                {props.children}
+            </Toolbar>
         </AppBar>
     );
 }

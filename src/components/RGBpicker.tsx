@@ -1,7 +1,6 @@
 import React, {useContext} from "react";
 import GradientSlider from "./GradientSlider";
 import {ColorContext} from "./Color";
-import HexInput from "./HexInput";
 import {RGBColor} from "d3";
 
 
@@ -54,13 +53,10 @@ export default function RGBpicker(props : RGBpickerProps) {
     return (<div>
         <style scoped>{css`
         ul { list-style: none; }
-        .MuiTextField { width: 4ch; }
-        .MuiSlider { width: auto; }
         `}</style>
         <ul>
         <li id="rgbR"><GradientSlider label={"R"} className={"rgbR"} value={value("r")} gradient={rGradient} initval={color.r} onChange={rOnChange}/></li>
         <li id="rgbG"><GradientSlider label={"G"} className={"rgbG"} value={value("g")} gradient={gGradient} initval={color.g} onChange={gOnChange}/></li>
         <li id="rgbB"><GradientSlider label={"B"} className={"rgbB"} value={value("b")} gradient={bGradient} initval={color.b} onChange={bOnChange}/></li>
-        <li><HexInput /></li>
     </ul></div>);
 }

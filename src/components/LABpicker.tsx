@@ -69,7 +69,7 @@ export default function LABpicker(props : LABpickerProps) {
         `}</style>
         <ul>
         <li id="labL"><GradientSlider max={100} label="L*" unit="" className={"labL"} value={value("l")} gradient={lGradient} initval={labcolor.l} onChange={lOnChange}/></li>
-        <li id="labA"><GradientSlider min={-160} max={160} label="a*" unit="" className={"labA"} value={c => value("a")(c)} gradient={aGradient} initval={100*labcolor.a} onChange={aOnChange}/></li>
-        <li id="labB"><GradientSlider min={-160} max={160} label="b*" unit="" className={"labB"} value={c => value("b")(c)} gradient={bGradient} initval={100*labcolor.b} onChange={bOnChange}/></li>
+        <li id="labA"><GradientSlider min={-160} max={160} label="a*" unit="" className={"labA"} value={value("a")} gradient={aGradient} initval={labcolor.a} onChange={aOnChange}/></li>
+        <li id="labB"><GradientSlider min={-160} max={160} label="b*" unit="" className={"labB"} value={value("b")} gradient={bGradient} initval={labcolor.b} onChange={bOnChange}/></li>
     </ul></div>);
 }

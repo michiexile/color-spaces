@@ -1,9 +1,7 @@
 import React, {useContext, useState} from "react";
 import {Grid, InputAdornment, Slider, TextField} from "@mui/material";
-import {styled} from "@mui/material";
 import {ColorContext} from "./Color";
-import {Color, ColorCommonInstance} from "d3-color";
-import {RGBColor} from "d3";
+import {RGBColor} from "d3-color";
 
 const css = String.raw;
 
