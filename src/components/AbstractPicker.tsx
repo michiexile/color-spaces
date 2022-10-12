@@ -2,33 +2,34 @@ import React, {useContext} from "react";
 import GradientSlider from "./GradientSlider";
 import {ColorContext} from "./Color";
 import {RGBColor} from "d3-color";
-// @ts-ignore
-
+import {ScaleContinuousNumeric, scaleLinear} from "d3-scale";
+import {ticks} from "d3-array";
 
 const css = String.raw
 
 type AbstractPickerProps = {
     colorConstructor : (any) => {rgb : () => RGBColor, formatHex : () => string},
-    coordData : {[key : string] : {stepcount : number, min? : number, max? : number, unit? : string}},
+    coordData : {[key : string] : {
+            stepcount : number,
+            scale? : ScaleContinuousNumeric<number, number>,
+            unit? : string,
+        }},
     listKey : string,
-    process? : {to : (i:number) => number, from : (i:number) => number}
 }
 
-export default function AbstractPicker({colorConstructor, coordData, listKey,
-                                           process = { to: (i:number) => i, from: (i:number) => i}}
-                                           : AbstractPickerProps) : JSX.Element {
+export default function AbstractPicker({colorConstructor, coordData, listKey} : AbstractPickerProps) : JSX.Element {
     const {color, updateColor} = useContext(ColorContext);
     const coordcolor = colorConstructor(color);
+    const defaultScale = scaleLinear()
+        .domain([0,255])
+        .range([0,255]);
 
     const gradientFactory = (coord: string, stepcount: number) => (
         () => {
-            const colorArgumentFactory = (i: number) => {
-                let args = new Map(Object.keys(coordData).map((x) => [x, coordcolor[x]]));
-                args.set(coord, process.to(i));
-                return args;
-            };
-            const colorSteps = [...Array(stepcount)].map((x, i) => {
-                let c = colorConstructor.apply(this, Array.from(colorArgumentFactory(i).values()));
+            const scale = coordData[coord].scale || defaultScale;
+            const colorSteps = ticks(...scale.domain(), stepcount).map((v) => {
+                const newCoords = { ...coordcolor, [coord]: scale(v) };
+                let c = colorConstructor(...Object.keys(coordData).map((x) => newCoords[x]));
                 return c.formatHex();
             });
             return colorSteps;
@@ -37,9 +38,9 @@ export default function AbstractPicker({colorConstructor, coordData, listKey,
 
     const onChangeFactory = (coord: string) => (
         (newC: number) => {
-            let args = new Map(Object.keys(coordData).map((x) => [x, coordcolor[x]]));
-            args.set(coord, process.to(newC));
-            const c = colorConstructor.apply(this, Array.from(args.values()));
+            let scale = coordData[coord].scale || defaultScale;
+            let args = Object.keys(coordData).map((x) => (x==coord)?scale(newC):coordcolor[x]);
+            const c = colorConstructor(...args);
             updateColor(c.rgb());
         }
     )
@@ -52,27 +53,24 @@ export default function AbstractPicker({colorConstructor, coordData, listKey,
     }
 
     return (<div>
-        <style scoped>{css`
-          ul {
-            list-style: none;
-          }
-        `}</style>
-        <ul>
+        <ul style={{listStyle: "none"}}>
             {
-                Object.keys(coordData).map((coord) => (
-                    <li key={`${listKey}-${coord}`}><GradientSlider
-                        initval={process.from(coordcolor[coord])}
-                        className={coord}
-                        label={coord.toUpperCase()}
-                        gradient={gradientFactory(coord, coordData[coord].stepcount)}
-                        onChange={onChangeFactory(coord)}
-                        value={(c) => process.from(colorConstructor(c)[coord])}
-                        min={("min" in coordData[coord]) ? coordData[coord].min : undefined}
-                        max={("max" in coordData[coord]) ? coordData[coord].max : undefined}
-                        unit={("unit" in coordData[coord]) ? coordData[coord].unit : undefined}
-                    />
-                    </li>
-                ))
+                Object.keys(coordData).map((coord) => {
+                    let scale = coordData[coord].scale || defaultScale;
+                    return(
+                        <li key={`${listKey}-${coord}`}><GradientSlider
+                            initval={scale.invert(coordcolor[coord])}
+                            className={coord}
+                            label={coord.toUpperCase()}
+                            gradient={gradientFactory(coord, coordData[coord].stepcount)}
+                            onChange={onChangeFactory(coord)}
+                            value={(c) => scale.invert(colorConstructor(c)[coord])}
+                            min={scale.domain()[0]}
+                            max={scale.domain()[1]}
+                            unit={("unit" in coordData[coord]) ? coordData[coord].unit : undefined}
+                            />
+                        </li>);
+            })
             }
         </ul>
     </div>);

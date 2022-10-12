@@ -2,6 +2,7 @@ import React from "react";
 import {rgb,RGBColor} from "d3-color";
 
 import AbstractPicker from "./AbstractPicker";
+import {scaleLinear} from "d3";
 
 type CMYprops = {
 
@@ -36,22 +37,23 @@ export default function CMYpicker(props : CMYprops) {
         if(typeof(argOrC) == "number" && m !== undefined && y !== undefined) {
             return cmy2CMY(argOrC, m, y)
         } else {
-            const rgbc = rgb(argOrC);
+            const rgbc = argOrC.rgb();
             return rgb2cmy(rgbc.r, rgbc.g, rgbc.b);
         }
     }
-
+    const scalePercent = scaleLinear()
+        .domain([0,100])
+        .range([0,1])
     const coordData = {
-        c : { stepcount : 100, max : 100, unit : "%"},
-        m : { stepcount : 100, max : 100, unit : "%"},
-        y : { stepcount : 100, max : 100, unit : "%"},
+        c : { stepcount : 100, unit : "%", scale: scalePercent},
+        m : { stepcount : 100, unit : "%", scale: scalePercent},
+        y : { stepcount : 100, unit : "%", scale: scalePercent},
     }
 
     return (
         <AbstractPicker
             colorConstructor={colorConstructor}
             coordData={coordData}
-            process={{to: (i) => i / 100, from: (i) => i * 100}}
             listKey={"cmy"}
         />
     )
